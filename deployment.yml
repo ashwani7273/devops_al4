@@ -1,0 +1,41 @@
+- apiVersion: v1
+kind: PersistentVolumeClaim
+metadata:
+  name: myweb-pv-claim
+  labels:
+    app: myweb
+spec:
+  accessModes:
+    - ReadWriteOnce
+  resources:
+    requests:
+      storage: 1Gi
+
+-------
+
+- apiVersion: apps/v1
+kind: Deployment
+metadata: 
+  name: myweb-deployment
+spec: 
+  replicas: 3
+  selector: 
+    matchLabels: 
+      env: deploy
+    strategy:
+    type: Recreate
+  template: 
+    metadata: 
+      labels: 
+        env: deploy
+      name: myweb-pod
+    spec: 
+      containers: 
+      - image: ashwani2399/webserver:v1
+        name: myweb-pod
+        volumeMounts:
+        - name: myweb-persistent-storage
+          mountPath: /var/www/html
+      volumes:
+      - name: myweb-persistent-storage
+        persistentVolumeClaim:
