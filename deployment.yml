@@ -6,19 +6,14 @@ spec:
   replicas: 3
   selector: 
     matchLabels: 
-      env: deploy
+      env: deployment
   template: 
     metadata: 
       labels: 
-        env: deploy
+        env: deployment
       name: myweb-pod
     spec: 
       containers: 
       - image: ashwani2399/webserver:v1
         name: myweb-pod
-        volumeMounts:
-        - name: myweb-persistent-storage
-          mountPath: /var/www/html
-      volumes:
-      - name: myweb-persistent-storage
-        persistentVolumeClaim:
+        
